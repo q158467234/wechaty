@@ -16,6 +16,15 @@
     "ter-indent": false,
     "member-ordering": false,
     "no-promise-as-boolean": true,
-    "typedef-whitespace": false
+    "typedef-whitespace": false,
+    "max-line-length": [
+      true,
+      180
+    ],
+    "no-unused-expression": true,
+    "no-unused-variable": true,
+    "max-classes-per-file": true,
+    "object-literal-sort-keys":false
+
   }
 }

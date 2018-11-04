@@ -59,21 +59,22 @@ import {
   VERSION,
 }                       from './config'
 
-import {
-  AnyFunction,
-  Sayable,
-}                       from './types'
-
+// @ts-ignore
+import { PuppetPuppeteer } from '../src/puppet-electron'
 import {
   Io,
 }                       from './io'
 import {
   PuppetModuleName,
 }                       from './puppet-config'
+// @ts-ignore
 import {
   PuppetManager,
 }                       from './puppet-manager'
-
+import {
+  AnyFunction,
+  Sayable,
+}                       from './types'
 import {
   Contact,
   ContactSelf,
@@ -480,11 +481,11 @@ export class Wechaty extends Accessory implements Sayable {
    */
   public on (event: WechatyEventName, listener: string | ((...args: any[]) => any)): this {
     log.verbose('Wechaty', 'on(%s, %s) registered',
-                            event,
-                            typeof listener === 'string'
-                              ? listener
-                              : typeof listener,
-                )
+      event,
+      typeof listener === 'string'
+        ? listener
+        : typeof listener,
+    )
 
     // DEPRECATED for 'friend' event
     if (event as any === 'friend') {
@@ -516,13 +517,13 @@ export class Wechaty extends Accessory implements Sayable {
           func.apply(this, args)
         } catch (e) {
           log.error('Wechaty', 'onModulePath(%s, %s) listener exception: %s',
-                                event, modulePath, e)
+            event, modulePath, e)
           this.emit('error', e)
         }
       }))
       .catch(e => {
         log.error('Wechaty', 'onModulePath(%s, %s) hotImport() exception: %s',
-                              event, modulePath, e)
+          event, modulePath, e)
         this.emit('error', e)
       })
 
@@ -565,15 +566,16 @@ export class Wechaty extends Accessory implements Sayable {
       throw new Error('no memory')
     }
 
-    const puppet       = this.options.puppet || config.systemPuppetName()
+    // const puppet       = this.options.puppet || config.systemPuppetName()
     const puppetMemory = this.memory.multiplex(PUPPET_MEMORY_NAME)
 
-    const puppetInstance = await PuppetManager.resolve({
-      puppet,
-      puppetOptions : this.options.puppetOptions,
-      // wechaty       : this,
-    })
+    // const puppetInstance = await PuppetManager.resolve({
+    //   puppet,
+    //   puppetOptions : this.options.puppetOptions,
+    //   // wechaty       : this,
+    // })
 
+    const puppetInstance = new PuppetPuppeteer()
     /**
      * Plug the Memory Card to Puppet
      */
@@ -787,9 +789,9 @@ export class Wechaty extends Accessory implements Sayable {
    */
   public async start (): Promise<void> {
     log.info('Wechaty', '<%s> start() v%s is starting...' ,
-                        this.options.puppet || config.systemPuppetName(),
-                        this.version(),
-            )
+      this.options.puppet || config.systemPuppetName(),
+      this.version(),
+    )
     log.verbose('Wechaty', 'puppet: %s'   , this.options.puppet)
     log.verbose('Wechaty', 'profile: %s'  , this.options.name)
     log.verbose('Wechaty', 'id: %s'       , this.id)
@@ -862,9 +864,9 @@ export class Wechaty extends Accessory implements Sayable {
    */
   public async stop (): Promise<void> {
     log.info('Wechaty', '<%s> stop() v%s is stoping ...' ,
-                        this.options.puppet || config.systemPuppetName(),
-                        this.version(),
-            )
+      this.options.puppet || config.systemPuppetName(),
+      this.version(),
+    )
 
     if (this.state.off()) {
       log.silly('Wechaty', 'stop() on an stopping/stopped instance')
@@ -1044,17 +1046,17 @@ export class Wechaty extends Accessory implements Sayable {
     return VERSION
   }
 
- /**
-  * @private
-  * Return version of Wechaty
-  *
-  * @param {boolean} [forceNpm=false]  - If set to true, will only return the version in package.json. </br>
-  *                                      Otherwise will return git commit hash if .git exists.
-  * @returns {string}                  - the version number
-  * @example
-  * console.log(Wechaty.instance().version())       // return '#git[af39df]'
-  * console.log(Wechaty.instance().version(true))   // return '0.7.9'
-  */
+  /**
+   * @private
+   * Return version of Wechaty
+   *
+   * @param {boolean} [forceNpm=false]  - If set to true, will only return the version in package.json. </br>
+   *                                      Otherwise will return git commit hash if .git exists.
+   * @returns {string}                  - the version number
+   * @example
+   * console.log(Wechaty.instance().version())       // return '#git[af39df]'
+   * console.log(Wechaty.instance().version(true))   // return '0.7.9'
+   */
   public version (forceNpm = false): string {
     return Wechaty.version(forceNpm)
   }
@@ -1089,7 +1091,7 @@ export class Wechaty extends Accessory implements Sayable {
   private memoryCheck (minMegabyte = 4): void {
     const freeMegabyte = Math.floor(os.freemem() / 1024 / 1024)
     log.silly('Wechaty', 'memoryCheck() free: %d MB, require: %d MB',
-                          freeMegabyte, minMegabyte)
+      freeMegabyte, minMegabyte)
 
     if (freeMegabyte < minMegabyte) {
       const e = new Error(`memory not enough: free ${freeMegabyte} < require ${minMegabyte} MB`)
