@@ -79,11 +79,11 @@ export class Page {
       this.win.show()
     })
     // @ts-ignore
-    console.log('路径1:'+__dirname)
+    console.log('路径1:'+path.resolve(__dirname,'..'))
     console.log('路径2:'+path.join(app.getAppPath(),'/icon/yun.png'))
     // console.log('路径3:'+path.join(app.getAppPath(),'/icon/yun.png'))
     // @ts-ignore
-    const tray = new Tray(__dirname + '/icon/yun.png');
+    const tray = new Tray(path.resolve(__dirname,'..') + '/icon/tray_white.png');
     const trayContextMenu = Menu.buildFromTemplate([
       {
         label: '最大化',

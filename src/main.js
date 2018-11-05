@@ -181,15 +181,16 @@ app.on('window-all-closed', () => {
 //
 function initbot() {
   console.log('main路径1:'+__dirname)
-  console.log('main路径2:'+path.join(app.getPath('userData'),'/icon/yun.png'))
+  console.log('main路径2:'+path.resolve(__dirname,'..'))
   bot = new Wechaty({
     browerOption:{
+      title:'微信',
       width: 1000,
       height: 700,
       minWidth: 720,
       minHeight: 450,
       show: false,
-      icon: path.join(__dirname, '/puppet-electron/icon/yun.png'),
+      icon: path.join(__dirname, '/icon/icon.png'),
     }
   })
 
