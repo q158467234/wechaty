@@ -24,7 +24,9 @@
     "no-unused-expression": true,
     "no-unused-variable": true,
     "max-classes-per-file": true,
-    "object-literal-sort-keys":false
+    "object-literal-sort-keys":false,
+    "ordered-imports":false,
+    "ban-types":false
 
   }
 }
