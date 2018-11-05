@@ -22,7 +22,7 @@
  */
 import { StateSwitch }  from 'state-switch'
 
-import { Message }      from './user'
+import { Message }      from '../user/index'
 
 import {
   log,

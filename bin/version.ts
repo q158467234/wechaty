@@ -18,6 +18,6 @@
  *
  */
 
-import { Wechaty } from '../src/wechaty'
+import { Wechaty } from '../src/wechaty/wechaty'
 
 console.log(Wechaty.version())

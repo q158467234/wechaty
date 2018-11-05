@@ -64,6 +64,7 @@ class PuppetTest extends PuppetPuppeteer {
 test('login/logout events', async t => {
   const sandbox = sinon.createSandbox()
   try {
+    // @ts-ignore
     const puppet  = new PuppetTest()
 
     sandbox.stub(Event, 'onScan') // block the scan event to prevent reset logined user
@@ -113,6 +114,7 @@ test('login/logout events', async t => {
 })
 
 test('restart() 3 times', async t => {
+  // @ts-ignore
   const puppet = new PuppetPuppeteer()
 
   let n = 3

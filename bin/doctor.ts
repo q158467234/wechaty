@@ -20,9 +20,9 @@
 
 import os from 'os'
 
-import { config }   from '../src/config'
-import { Doctor }   from '../src/doctor'
-import { Wechaty }  from '../src/wechaty'
+import { config }   from '../src/wechaty/config'
+import { Doctor }   from '../src/wechaty/doctor'
+import { Wechaty }  from '../src/wechaty/wechaty'
 
 const wechaty = Wechaty.instance()
 const doctor = new Doctor()

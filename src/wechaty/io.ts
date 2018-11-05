@@ -21,7 +21,7 @@ import WebSocket        from 'ws'
 
 import {
   Message,
-}                 from './user'
+}                 from '../user/index'
 
 import {
   PuppetQrcodeScanEvent,

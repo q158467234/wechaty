@@ -1,6 +1,6 @@
 import {
   Contact,
-}           from './user'
+}           from '../user/index'
 
 export type AnyFunction = (...args: any[]) => any
 

@@ -24,10 +24,10 @@ import {
 
 import {
   Accessory,
-}                   from '../accessory'
+}                   from '../wechaty/accessory'
 import {
   log,
-}                   from '../config'
+}                   from '../wechaty/config'
 import {
   tryWait,
 }                   from '../helper-functions'
@@ -39,7 +39,7 @@ import {
 
 import {
   Acceptable,
-}                   from '../types'
+}                   from '../wechaty/types'
 
 import {
   Contact,

@@ -31,15 +31,15 @@ import {
 
 import {
   Accessory,
-}                       from '../accessory'
+}                       from '../wechaty/accessory'
 import {
   FOUR_PER_EM_SPACE,
   log,
   Raven,
-}                       from '../config'
+}                       from '../wechaty/config'
 import {
   Sayable,
-}                       from '../types'
+}                       from '../wechaty/types'
 
 import {
   Contact,

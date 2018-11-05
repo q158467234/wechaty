@@ -1,6 +1,6 @@
 #!/usr/bin/env ts-node
 
-import { PuppetManager } from '../src/puppet-manager'
+import { PuppetManager } from '../src/wechaty/puppet-manager'
 
 PuppetManager.installAll()
 .catch(e => {

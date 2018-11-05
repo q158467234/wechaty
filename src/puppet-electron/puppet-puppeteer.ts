@@ -102,6 +102,9 @@ import {
 }                           from './web-schemas'
 
 export type ScanFoodType   = 'scan' | 'login' | 'logout'
+export interface BrowerOption {
+    opt?: {},
+}
 
 export class PuppetPuppeteer extends Puppet {
   public static readonly VERSION = VERSION
@@ -115,15 +118,19 @@ export class PuppetPuppeteer extends Puppet {
 
   constructor (
     public options: PuppetOptions = {},
+    public browerOption: BrowerOption = {}
   ) {
     super(options)
-
+    console.log('this.browerOpt=====>')
+    console.log(browerOption)
     this.fileId = 0
     this.bridge = new Bridge({
       head   : envHead(),
       memory : this.memory,
+      opt:browerOption
     })
-
+    console.log('this.memory=====>')
+    console.log(this.memory)
     const SCAN_TIMEOUT  = 2 * 60 * 1000 // 2 minutes
     this.scanWatchdog   = new Watchdog<ScanFoodType>(SCAN_TIMEOUT, 'Scan')
 

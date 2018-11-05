@@ -60,7 +60,7 @@ import {
 }                       from './config'
 
 // @ts-ignore
-import { PuppetPuppeteer } from '../src/puppet-electron'
+import { PuppetPuppeteer } from '../puppet-electron/index'
 import {
   Io,
 }                       from './io'
@@ -83,7 +83,7 @@ import {
   Room,
   RoomInvitation,
   UrlLink,
-}                       from './user/'
+}                       from '../user'
 
 export const WECHATY_EVENT_DICT = {
   ...CHAT_EVENT_DICT,
@@ -104,6 +104,7 @@ export interface WechatyOptions {
   puppet?        : PuppetModuleName | Puppet, // Puppet name or instance
   puppetOptions? : PuppetOptions,             // Puppet TOKEN
   ioToken?       : string,                    // Io TOKEN
+  browerOption?  :{}
 }
 
 const PUPPET_MEMORY_NAME = 'puppet'
@@ -575,7 +576,7 @@ export class Wechaty extends Accessory implements Sayable {
     //   // wechaty       : this,
     // })
 
-    const puppetInstance = new PuppetPuppeteer()
+    const puppetInstance = new PuppetPuppeteer({},this.options.browerOption)
     /**
      * Plug the Memory Card to Puppet
      */

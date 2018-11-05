@@ -6,7 +6,7 @@ const {
   Wechaty,
   log,
   Message,
-} = require('../../dist/src/index')
+} = require('./wechaty/index')
 const qrcodeTerminal  = require('qrcode-terminal')
 const Tuling123       = require('tuling123-client')
 
@@ -189,6 +189,7 @@ function initbot() {
       minWidth: 720,
       minHeight: 450,
       show: false,
+      icon: path.join(__dirname, '/puppet-electron/icon/yun.png'),
     }
   })
 
@@ -233,6 +234,7 @@ Please wait... I'm trying to login in...
   function onScan (qrcode, status) {
     // Generate a QR Code online via
     // http://goqr.me/api/doc/create-qr-code/
+    qrcodeTerminal.generate(qrcode, { small: true })
     const qrcodeImageUrl = [
       'https://api.qrserver.com/v1/create-qr-code/?data=',
       encodeURIComponent(qrcode),

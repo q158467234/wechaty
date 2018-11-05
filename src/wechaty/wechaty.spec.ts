@@ -38,7 +38,7 @@ import {
 
   Room,
   VERSION,
-}                 from './'
+}                 from './.'
 
 import {
   Puppet,
@@ -61,10 +61,10 @@ test('Export of the Framework', async t => {
   t.ok(log            , 'should export log')
 
   const bot = Wechaty.instance()
-  t.is(bot.version(true), require('../package.json').version,
+  t.is(bot.version(true), require('../../package.json').version,
                           'should return version as the same in package.json',
   )
-  t.is(VERSION, require('../package.json').version,
+  t.is(VERSION, require('../../package.json').version,
                   'should export version in package.json',
   )
 })

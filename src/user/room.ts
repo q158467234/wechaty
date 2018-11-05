@@ -26,16 +26,16 @@ import {
 
 import {
   Accessory,
-}                       from '../accessory'
+}                       from '../wechaty/accessory'
 import {
   // config,
   FOUR_PER_EM_SPACE,
   log,
   Raven,
-}                       from '../config'
+}                       from '../wechaty/config'
 import {
   Sayable,
-}                       from '../types'
+}                       from '../wechaty/types'
 
 import { Contact }        from './contact'
 import { RoomInvitation } from './room-invitation'

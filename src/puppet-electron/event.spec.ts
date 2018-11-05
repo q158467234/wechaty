@@ -28,6 +28,7 @@ import {
 }                   from './puppet-puppeteer'
 
 test('Puppet Puppeteer Event smoke testing', async (t) => {
+  // @ts-ignore
   const puppet = new PuppetPuppeteer()
 
   try {

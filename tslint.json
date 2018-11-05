@@ -24,7 +24,14 @@
     "no-unused-expression": true,
     "no-unused-variable": true,
     "max-classes-per-file": true,
-    "object-literal-sort-keys":false
+    "object-literal-sort-keys":false,
+    "ordered-imports":false,
+    "semicolon":false,
+    "space-before-function-paren":false,
+    "one-line":false,
+    "whitespace":false,
+    "ban-types":false,
+    "no-empty": false
 
   }
 }

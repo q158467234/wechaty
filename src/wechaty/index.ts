@@ -27,7 +27,7 @@ export {
   Room,
   RoomInvitation,
   UrlLink,
-}                         from './user'
+}                         from '../user/index'
 
 export {
   MediaMessage,

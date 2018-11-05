@@ -21,7 +21,7 @@ import { FileBox } from 'file-box'
 
 import {
   log,
-}           from '../config'
+}           from '../wechaty/config'
 
 import {
   Contact,

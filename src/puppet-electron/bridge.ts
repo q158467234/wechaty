@@ -73,6 +73,7 @@ export interface InjectResult {
 export interface BridgeOptions {
   head?  : boolean,
   memory : MemoryCard,
+  opt?:{}
 }
 
 export class Bridge extends EventEmitter {
@@ -130,8 +131,11 @@ export class Bridge extends EventEmitter {
   public async initBrowser (): Promise<Browser> {
     log.verbose('PuppetPuppeteerBridge', 'initBrowser()')
     // @ts-ignore
-    const headless = this.options.head ? false : true
-    const browser = await launch({})
+    // const headless = this.options.head ? false : true
+    const browerOption = this.options.opt
+    console.log('获取到opt')
+    console.log(browerOption)
+    const browser = await launch(browerOption)
 
     const version = await browser.version()
     log.verbose('PuppetPuppeteerBridge', 'initBrowser() version: %s', version)

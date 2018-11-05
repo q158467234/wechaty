@@ -1,11 +1,15 @@
-import { BrowserWindow, Cookie, ipcMain, WebContents } from 'electron'
+import { app, BrowserWindow, WebContents, Cookie, ipcMain, Tray, Menu } from 'electron'
 // @ts-ignore
 import  * as _  from 'lodash'
 import { setTimeout } from 'timers'
+import path from 'path'
 export class Browser {
   public options: any
   // @ts-ignore
   constructor (options) {
+    console.log('this.options')
+    this.options = options
+    console.log(this.options)
   }
   public async close (): Promise<any> {
     // @ts-ignore
@@ -53,25 +57,129 @@ export class Page {
   public win: BrowserWindow
   public web: WebContents
   // @ts-ignore
-  constructor (opt) {
-    opt = opt || {}
-
-    opt = _.assign({}, {webPreferences: {
+  constructor (pageOption) {
+    pageOption = pageOption || {}
+    console.log('page')
+    pageOption = _.assign(pageOption, {webPreferences: {
       allowRunningInsecureContent: true,
     }})
-    this.win = new BrowserWindow({
-      width: 1000,
-      height: 700,
-      minWidth: 720,
-      minHeight: 450,
-      show: false,
-    })
+    console.log(pageOption)
+    const bro = this.win = new BrowserWindow(pageOption)
+    // const bro = this.win = new BrowserWindow({
+    //   width: 1000,
+    //   height: 700,
+    //   minWidth: 720,
+    //   minHeight: 450,
+    //   show: false,
+    // })
     this.web = this.win.webContents
     this.web.openDevTools()
 
     this.win.once('ready-to-show', () => {
       this.win.show()
     })
+    // @ts-ignore
+    console.log('路径1:'+__dirname)
+    console.log('路径2:'+path.join(app.getAppPath(),'/icon/yun.png'))
+    // console.log('路径3:'+path.join(app.getAppPath(),'/icon/yun.png'))
+    // @ts-ignore
+    const tray = new Tray(__dirname + '/icon/yun.png');
+    const trayContextMenu = Menu.buildFromTemplate([
+      {
+        label: '最大化',
+        accelerator: 'CommandOrControl+G',
+        click: () => {
+          showAndFocusWindow()
+        },
+      },
+      {
+        label: '最小化',
+        accelerator: 'CommandOrControl+H',
+        click: () => {
+          miniWindow()
+        },
+      },
+      {
+        label: '开发者工具',
+        accelerator: 'CommandOrControl+Shift+I',
+        click() {
+          // @ts-ignore
+          bro.show()
+          // @ts-ignore
+          bro.focus()
+          // @ts-ignore
+          bro.toggleDevTools()
+        },
+      },
+      // {
+      //   label: '清除浏览器设置',
+      //   click() {
+      //     clearAppData();
+      //   }
+      // },
+      {
+        label: '退出',
+        accelerator: 'CommandOrControl+Q',
+        click: () => {
+          quit();
+        },
+      },
+    ]);
+    tray.setToolTip('云之家');
+    tray.setContextMenu(trayContextMenu)
+    tray.on('click', () => {
+      showAndFocusWindow()
+    })
+
+// Emitted when the window is closed.
+    this.win.on('closed', function () {
+      // Dereference the window object, usually you would store windows
+      // in an array if your app supports multi windows, this is the time
+      // when you should delete the corresponding element.
+      // @ts-ignore
+      this.win = null
+    })
+
+    /**
+     * 窗体关闭事件处理
+     * 默认只会隐藏窗口
+     */
+    this.win.on('close', (e) => {
+      e.preventDefault()
+      bro.hide()
+    })
+    /**
+     * 最小化
+     */
+    function miniWindow() {
+      // @ts-ignore
+      bro.minimize()
+    }
+
+    /**
+     * 最大化
+     */
+    function showAndFocusWindow(){
+      // @ts-ignore
+      bro.show()
+      // @ts-ignore
+      bro.focus()
+    }
+
+    /**
+     * 退出应用
+     */
+    function quit() {
+      // @ts-ignore
+      if (!tray.isDestroyed()) tray.destroy()
+      BrowserWindow.getAllWindows()
+        .forEach(item => {
+          if (!item.isDestroyed()) item.destroy()
+        })
+      if (process.platform !== 'darwin') {
+        app.quit()
+      }
+    }
   }
 
   public async close (): Promise<any> {

@@ -21,10 +21,10 @@
 import {
   config,
   log,
-}               from '../src/config'
+}               from '../src/wechaty/config'
 
-import { IoClient } from '../src/io-client'
-import { Wechaty }  from '../src/wechaty'
+import { IoClient } from '../src/wechaty/io-client'
+import { Wechaty }  from '../src/wechaty/wechaty'
 
 const welcome = `
 | __        __        _           _
