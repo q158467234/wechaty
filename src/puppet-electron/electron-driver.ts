@@ -1,15 +1,15 @@
-import { app, BrowserWindow, WebContents, Cookie, ipcMain, Tray, Menu } from 'electron'
+import { app, BrowserWindow, WebContents, Cookie, ipcMain, Tray, Menu,session } from 'electron'
 // @ts-ignore
 import  * as _  from 'lodash'
 import { setTimeout } from 'timers'
 import path from 'path'
+// @ts-ignore
+import  CssInjector from './css-injector'
 export class Browser {
   public options: any
   // @ts-ignore
   constructor (options) {
-    console.log('this.options')
     this.options = options
-    console.log(this.options)
   }
   public async close (): Promise<any> {
     // @ts-ignore
@@ -59,11 +59,12 @@ export class Page {
   // @ts-ignore
   constructor (pageOption) {
     pageOption = pageOption || {}
-    console.log('page')
     pageOption = _.assign(pageOption, {webPreferences: {
       allowRunningInsecureContent: true,
+      javascript: true,
+      plugins: true,
+      webSecurity: false,
     }})
-    console.log(pageOption)
     const bro = this.win = new BrowserWindow(pageOption)
     // const bro = this.win = new BrowserWindow({
     //   width: 1000,
@@ -73,16 +74,11 @@ export class Page {
     //   show: false,
     // })
     this.web = this.win.webContents
-    this.web.openDevTools()
+    // this.web.openDevTools()
 
     this.win.once('ready-to-show', () => {
       this.win.show()
     })
-    // @ts-ignore
-    console.log('路径1:'+path.resolve(__dirname,'..'))
-    console.log('路径2:'+path.join(app.getAppPath(),'/icon/yun.png'))
-    // console.log('路径3:'+path.join(app.getAppPath(),'/icon/yun.png'))
-    // @ts-ignore
     const tray = new Tray(path.resolve(__dirname,'..') + '/icon/tray_white.png');
     const trayContextMenu = Menu.buildFromTemplate([
       {
@@ -125,17 +121,14 @@ export class Page {
         },
       },
     ]);
-    tray.setToolTip('云之家');
+    tray.setToolTip('微信');
     tray.setContextMenu(trayContextMenu)
     tray.on('click', () => {
       showAndFocusWindow()
     })
 
-// Emitted when the window is closed.
+    // Emitted when the window is closed.
     this.win.on('closed', function () {
-      // Dereference the window object, usually you would store windows
-      // in an array if your app supports multi windows, this is the time
-      // when you should delete the corresponding element.
       // @ts-ignore
       this.win = null
     })
@@ -152,7 +145,6 @@ export class Page {
      * 最小化
      */
     function miniWindow() {
-      // @ts-ignore
       bro.minimize()
     }
 
@@ -160,9 +152,7 @@ export class Page {
      * 最大化
      */
     function showAndFocusWindow(){
-      // @ts-ignore
       bro.show()
-      // @ts-ignore
       bro.focus()
     }
 
@@ -170,7 +160,6 @@ export class Page {
      * 退出应用
      */
     function quit() {
-      // @ts-ignore
       if (!tray.isDestroyed()) tray.destroy()
       BrowserWindow.getAllWindows()
         .forEach(item => {
@@ -180,6 +169,70 @@ export class Page {
         app.quit()
       }
     }
+
+    // @ts-ignore
+    session.defaultSession.webRequest.onCompleted({urls: [
+          'https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxinit*',
+          'https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxinit*',
+          'https://wx.qq.com/?&lang*',
+          'https://wx2.qq.com/?&lang*'
+        ]},
+      (details) => handleRequest(details)
+    )
+
+    function handleRequest(details: Electron.OnCompletedDetails) {
+      // console.log(details.url)
+      details.url.startsWith('https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxinit') && login()
+      details.url.startsWith('https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxinit') && login()
+      details.url.startsWith('https://wx.qq.com/?&lang') && logout()
+      details.url.startsWith('https://wx2.qq.com/?&lang') && logout()
+    }
+
+    function login() {
+      bro.hide()
+      bro.setSize(1000, 670, true)
+      bro.setResizable(true)
+      bro.show()
+    }
+
+    function logout() {
+      bro.setSize(380, 500, true)
+    }
+
+    this.web.on('dom-ready', () => {
+
+      this.web.insertCSS(CssInjector.login)
+      this.web.insertCSS(CssInjector.main)
+      this.web.executeJavaScript(`
+            let faLink = document.createElement('link');
+            faLink.setAttribute('rel', 'stylesheet');
+            faLink.type = 'text/css';
+            faLink.href = 'https://use.fontawesome.com/releases/v5.0.13/css/all.css';
+            faLink.integrity = 'sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp';
+            faLink.crossOrigin = 'anonymous';
+            document.head.appendChild(faLink);
+        `)
+      this.web.executeJavaScript(`
+            document.title = '微信，是一个生活方式';
+            new MutationObserver(mutations => {
+                if (document.title !== '微信，是一个生活方式') {
+                    document.title = '微信，是一个生活方式';
+                }
+            }).observe(document.querySelector('title'), {childList: true});
+        `)
+      this.web.executeJavaScript(`
+            let toggleButton = document.createElement('i');
+            toggleButton.className = 'toggle_contact_button fas fa-angle-double-left';
+            toggleButton.onclick = () => {
+                toggleButton.classList.toggle('mini');
+                document.querySelector('.panel').classList.toggle('mini');
+            };
+            let titleBar = document.querySelector('.header');
+            titleBar.appendChild(toggleButton);
+        `)
+
+    })
+
   }
 
   public async close (): Promise<any> {
@@ -219,7 +272,7 @@ export class Page {
     if (eventName === 'load') {
 // @ts-ignore
       this.web.addListener('did-finish-load', (event) => {
-        console.log('触发一次完成回调')
+        // console.log('触发一次完成回调')
         callback()
       })
     }
@@ -241,16 +294,16 @@ export class Page {
     return new Promise((resolve, reject) => {
       // @ts-ignore
       this.web.on('did-fail-load', (event, errorCode, errorMessage) => {
-        console.log('fail')
+        // console.log('加载页面失败')
         reject(errorMessage)
       })
       // @ts-ignore
       this.web.on('did-finish-load', (event) => {
-        console.log('lodapage')
+        // console.log('加载页面完成')
         resolve()
       })
       try {
-        console.log('加载url')
+        // console.log('加载url')
         this.web.loadURL(url)
       } catch (e) {
         console.log(e)

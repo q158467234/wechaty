@@ -31,7 +31,10 @@
     "one-line":false,
     "whitespace":false,
     "ban-types":false,
-    "no-empty": false
+    "no-empty": false,
+    "only-arrow-functions":false,
+    "no-var-requires":false,
+    "no-unused-expression":false
 
   }
 }

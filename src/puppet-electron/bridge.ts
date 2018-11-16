@@ -92,13 +92,13 @@ export class Bridge extends EventEmitter {
 
   public async start (): Promise<void> {
     log.verbose('PuppetPuppeteerBridge', 'start()')
-    console.log('开始一次')
+    // console.log('开始一次')
     this.state.on('pending')
     try {
-      console.log('初始化initBrowser一次')
+      // console.log('初始化initBrowser一次')
       this.browser = await this.initBrowser()
       log.verbose('PuppetPuppeteerBridge', 'start() initBrowser() done')
-      console.log('初始化onLoad一次')
+      // console.log('初始化onLoad一次')
       this.on('load', this.onLoad.bind(this))
 
       const ready = new Promise(resolve => this.once('ready', resolve))
@@ -133,8 +133,8 @@ export class Bridge extends EventEmitter {
     // @ts-ignore
     // const headless = this.options.head ? false : true
     const browerOption = this.options.opt
-    console.log('获取到opt')
-    console.log(browerOption)
+    // console.log('获取到opt')
+    // console.log(browerOption)
     const browser = await launch(browerOption)
 
     const version = await browser.version()
@@ -175,7 +175,7 @@ export class Bridge extends EventEmitter {
       //    */
       //   await page.exposeFunction('wechatyPuppetBridgeEmit', this.emit.bind(this))
       // }
-      console.log('注入js')
+      // console.log('注入js')
       await this.readyAngular(page)
       await this.inject(page)
       // this.bindEvents(page)
@@ -196,7 +196,7 @@ export class Bridge extends EventEmitter {
       // @ts-ignore
       page.bindEvent(evtName, (event, args) => {
         // @ts-ignore
-        console.log('执行一次监听事件：' + evtName + ',内容' + args)
+        // console.log('执行一次监听事件：' + evtName + ',内容' + args)
         this.emit(evtName, args)
       })
     })
@@ -204,7 +204,7 @@ export class Bridge extends EventEmitter {
 
   public async initPage (browser: Browser): Promise<Page> {
     log.verbose('PuppetPuppeteerBridge', 'initPage()')
-    console.log('initPage')
+    // console.log('initPage')
     // set this in time because the following callbacks
     // might be called before initPage() return.
     const page = this.page =  await browser.newPage()
@@ -215,7 +215,7 @@ export class Bridge extends EventEmitter {
     page.on('dialog', this.onDialog.bind(this))
     page.on('load', () => {
       this.emit('load', page)
-      console.log('emit loaded')
+      // console.log('emit loaded')
     })
     const cookieList: Cookie[] | undefined = []
     const url        = this.entryUrl(cookieList)
@@ -223,7 +223,7 @@ export class Bridge extends EventEmitter {
     log.verbose('PuppetPuppeteerBridge', 'initPage() before page.goto(url)')
 
     // Does this related to(?) the CI Error: exception: Navigation Timeout Exceeded: 30000ms exceeded
-    console.log('GO-TOurl' + url)
+    // console.log('GO-TOurl' + url)
     await page.goto(url)
 
     log.verbose('PuppetPuppeteerBridge', 'initPage() after page.goto(url)')
@@ -295,7 +295,7 @@ export class Bridge extends EventEmitter {
       const SUCCESS_CIPHER = 'ding() OK!'
       const future = new Promise(resolve => this.once('dong', resolve))
       this.ding(SUCCESS_CIPHER)
-      console.log(SUCCESS_CIPHER)
+      // console.log(SUCCESS_CIPHER)
       const r = await future
       if (r !== SUCCESS_CIPHER) {
         throw new Error('fail to get right return from call ding()')
@@ -997,7 +997,7 @@ export class Bridge extends EventEmitter {
   public entryUrl (cookieList?: Cookie[]): string {
     log.verbose('PuppetPuppeteerBridge', 'cookieDomain(%s)', cookieList)
 
-    const DEFAULT_URL = 'https://wx.qq.com'
+    const DEFAULT_URL = 'https://wx.qq.com/?lang=zh_CN'
 
     if (!cookieList || cookieList.length === 0) {
       log.silly('PuppetPuppeteerBridge', 'cookieDomain() no cookie, return default %s', DEFAULT_URL)
@@ -1038,7 +1038,7 @@ export class Bridge extends EventEmitter {
     if (!this.page) {
       throw new Error('no page')
     }
-    console.log('reload一次')
+    // console.log('reload一次')
     await this.page.reload()
     return
   }

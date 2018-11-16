@@ -121,16 +121,16 @@ export class PuppetPuppeteer extends Puppet {
     public browerOption: BrowerOption = {}
   ) {
     super(options)
-    console.log('this.browerOpt=====>')
-    console.log(browerOption)
+    // console.log('this.browerOption=====>')
+    // console.log(browerOption)
     this.fileId = 0
     this.bridge = new Bridge({
       head   : envHead(),
       memory : this.memory,
       opt:browerOption
     })
-    console.log('this.memory=====>')
-    console.log(this.memory)
+    // console.log('this.memory=====>')
+    // console.log(this.memory)
     const SCAN_TIMEOUT  = 2 * 60 * 1000 // 2 minutes
     this.scanWatchdog   = new Watchdog<ScanFoodType>(SCAN_TIMEOUT, 'Scan')
 
@@ -216,8 +216,9 @@ export class PuppetPuppeteer extends Puppet {
       data: info,
       type: 'scan',
     }))
+    // @ts-ignore
     puppet.on('login',  user => {
-      console.log('登录后停止看门狗' + user)
+      // console.log('登录后停止看门狗' + user)
       // dog.feed({
       //   data: user,
       //   type: 'login',
@@ -233,13 +234,14 @@ export class PuppetPuppeteer extends Puppet {
       type: 'logout',
     }))
 
+    // @ts-ignore
     dog.on('reset', async (food, timePast) => {
-      log.warn('PuppetPuppeteer', 'initScanWatchdog() on(reset) lastFood: %s, timePast: %s',
-                            food.data, timePast)
-      console.log('重置看门狗')
+      // log.warn('PuppetPuppeteer', 'initScanWatchdog() on(reset) lastFood: %s, timePast: %s',
+      //                       food.data, timePast)
+      // console.log('重置看门狗')
       try {
         // @ts-ignore
-        console.log('reload123')
+        // console.log('reload123')
         // await this.bridge.reload()
 
       } catch (e) {
@@ -306,13 +308,13 @@ export class PuppetPuppeteer extends Puppet {
     }
 // @ts-ignore
     this.bridge.on('dong'     , data => {
-      console.log('puppet-bridge执行dong:' + data)
+      // console.log('puppet-bridge执行dong:' + data)
       this.emit('dong', data)
     })
     // this.bridge.on('ding'     , Event.onDing.bind(this))
     // @ts-ignore
     this.bridge.on('heartbeat', data => {
-      console.log('puppet-bridge执行心跳:' + data)
+      // console.log('puppet-bridge执行心跳:' + data)
       this.emit('watchdog', { type: 'bridge ding', data })
     })
 
@@ -536,7 +538,7 @@ export class PuppetPuppeteer extends Puppet {
   }
 
   public async login (userId: string): Promise<void> {
-    console.log('puppteer里的login')
+    // console.log('puppteer里的login')
     return super.login(userId)
   }
 

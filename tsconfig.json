@@ -34,14 +34,18 @@
       "node_modules/"
     , "dist/"
     , "tests/fixtures/"
+    , "src/**/*.spec.ts"
   ]
   , "include": [
        "app/**/*.ts"
      , "bin/*.ts"
 //     , "bot/**/*.ts"
-//     , "examples/**/*.ts"
+     , "examples/**/*.ts"
 //     , "scripts/**/*.ts"
-     , "src/**/*.ts"
+     , "src/helper-functions/*.ts"
+     , "src/puppet-electron/*.ts"
+     , "src/user/*.ts"
+     , "src/wechaty/*.ts"
 //     , "tests/**/*.spec.ts"
   ]
 }

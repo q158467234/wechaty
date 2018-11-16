@@ -104,7 +104,7 @@ export interface DefaultSetting {
   DEFAULT_PORT     : number,
   // DEFAULT_PUPPET   : PuppetName,
   DEFAULT_APIHOST  : string,
-  // DEFAULT_PROFILE  : string,
+  DEFAULT_PROFILE  : string,
   DEFAULT_TOKEN    : string,
   DEFAULT_PROTOCOL : string,
 }

@@ -140,11 +140,11 @@ async function onLogin (
      *
      * issue #772: this.bridge might not inited if the 'login' event fired too fast(because of auto login)
      */
-    console.log('进行获取getUserName')
+    // console.log('进行获取getUserName')
     const userId = await this.bridge.getUserName()
-    console.log('userId:' + userId)
+    // console.log('userId:' + userId)
     if (!userId) {
-      console.log('userId不存在，重新登录')
+      // console.log('userId不存在，重新登录')
       log.verbose('PuppetPuppeteerEvent', 'onLogin() browser not fully loaded(ttl=%d), retry later', ttl)
       // const html = await this.bridge.innerHTML()
       // log.silly('PuppetPuppeteerEvent', 'onLogin() innerHTML: %s', html.substr(0, 500))
@@ -158,14 +158,14 @@ async function onLogin (
     // await user.ready()
 
     log.silly('PuppetPuppeteerEvent', `onLogin() user ${userId} logined`)
-    console.log('saveCookie事件')
+    // console.log('saveCookie事件')
     // if (this.state.on() === true) {
     await this.saveCookie()
     // }
-    console.log('waitStable事件')
+    // console.log('waitStable事件')
     // fix issue #668
     await this.waitStable()
-    console.log('EVENT事件里面的login')
+    // console.log('EVENT事件里面的login')
     await this.login(userId)
 
   } catch (e) {
@@ -228,7 +228,7 @@ async function onMessage (
 }
 
 async function onUnload (this: PuppetPuppeteer): Promise<void> {
-  console.log('执行eventunload')
+  // console.log('执行eventunload')
   this.unload()
   log.silly('PuppetPuppeteerEvent', 'onUnload()')
   /*
